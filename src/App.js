@@ -1,30 +1,26 @@
-import React, {useState} from 'react';
-import axios from 'axios'
-import Button from '@material-ui/core/Button'
+import React from 'react'
+import Landing from './views/Landing'
+import Register from './views/Register'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
 
 function App() {
-  const [test, updateTest] = useState('')
-  const handleClick = () => {
-    axios.get(`/api?name=hii`)
-      .then(res=>updateTest(res?.data?.greeting))
-      .catch(err=>console.log(err))
-  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        {test ? test : 'Nothing'}
-        <p>
-          Welcome 
-        </p>
-        <Button
-          onClick={handleClick}
-          variant="outlined" color="primary"
-        >
-          Click
-        </Button>
-        <Button variant="outlined">Second</Button>
-      </header>
-    </div>
+    <Router>
+        <Switch>
+          {/* <Route path='/register/:kitId' render={(props)=><Register {...props} />}/> */}
+          <Route path='/register/:kitId' component={() => { 
+              window.location.href = 'https://google.com'; 
+              return null;
+          }}/>
+          <Route path='/' render={(props)=><Landing {...props}/> }/>
+        </Switch>
+    </Router>
   );
 }
 
