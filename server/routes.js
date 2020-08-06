@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var {db, getProject} = require('./utils')
+var {getProjectData, getDocumentsByCode} = require('./utils')
 
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
@@ -9,21 +9,33 @@ router.use(function timeLog(req, res, next) {
 });
 
 // Get routes
-router.get('/api/register/:kitId([A-Z0-9]{7,7})', async (req, res) => {
-    console.log(req.params)
+router.get('/api/register/:kitId([A-Z0-9]{7,7})', async (req, res, next) => {
     const {kitId} = req.params
-    console.log(kitId)
-    if(kitId){
-        const name = req.query.name || 'World';
-        const proj = await getProject(kitId);
-        console.log('project', proj)
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-    }else{
-        console.log('fail')
-        res.status(403).render();
-        res.render('error', { error: err });
+    
+    try{
+        if(!kitId)
+            throw new Error('No kit ID passed')
+
+        //Query doc by QR id
+        const docs = await getDocumentsByCode(kitId);
+        let data;
+
+        docs.forEach(doc=> data = doc.data());
+        
+        const veraProj = await getProjectData(data.project);
+        
+        //Send project payload to front
+        veraProj.forEach(doc=>{
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ project: `${JSON.stringify(doc.data())}` }));    
+        })
+        
+    }catch(err){
+        //Log error here
+        //parse error to send to front
+        next(err)
     }
+        
     
 });
 

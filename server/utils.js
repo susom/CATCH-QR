@@ -7,41 +7,31 @@ admin.initializeApp({
   
 const db = admin.firestore();
 
-async function get(collection){
-    try{
-        const snapshot = await db.collection(collection).get();
-        if(snapshot){
-            snapshot.forEach((doc) => {
-                console.log(doc.id, '=>', doc.data());
-            });
-        }
-        
-    } catch(err) {
-        console.log(err)
+async function getDocumentsByCode(code){
+    let doc = await db.collection('vera_kits').where("kit_id", "==", code).get(); //get all documents
+    switch(doc.size){
+        case 0:
+            throw new Error(`No document found with id ${code}`);
+        case 1: 
+            return doc
+        default:
+            throw new Error(`Mutliple documents found with id ${code}`);
     }
 }
 
-async function getProject(code){
-    try{
-        const docs = await db.collection('vera_kits').get(); //get all documents
-        if(docs){
-            docs.forEach((doc) => {
-                let data = doc.data();
-                if(data.kit_id && data.kit_id === code){
-                    console.log(data.kit_id, data.project);
-                    // return data.project
-                }
-                // console.log(doc.id, '=>', doc.data());
-            });
-        }
-    } catch(err) {
-        console.log(err);
+async function getProjectData(project){
+    let doc = await db.collection('vera_projects').where("name", "==", project).get(); //get all documents
+    switch(doc.size){
+        case 0:
+            throw new Error(`No document found under project name ${project}`);
+        case 1: 
+            return doc
+        default:
+            throw new Error(`Mutliple documents found with project name ${project}`);
     }
 }
-
-
 
 module.exports = {
-    db, 
-    getProject
+    getDocumentsByCode,
+    getProjectData
 };
