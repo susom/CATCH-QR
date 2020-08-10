@@ -77,8 +77,10 @@ class Activate extends React.Component{
         var res = url.replace("[kit_id]", code);
         console.log('fetched url : ', url)
         console.log('replaced url : ' , res)
-        // window.location = 'http://www.google.com'
-
+        if(res)
+            window.location = res
+        else
+            this.setState({error: 'No Redirect entry found, please contact your admin'})
     }
 
     //Skeleton error handling

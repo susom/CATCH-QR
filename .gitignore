@@ -25,3 +25,4 @@ yarn-error.log*
 *workspace*
 
 som*.json
+deploy.sh
