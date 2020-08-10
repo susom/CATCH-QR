@@ -1,9 +1,14 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('../som-irt-scci-dev-2c275bf1a983.json');
+const env = require('dotenv').config()
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
+if(process.env.NODE_ENV === 'production'){ //Dev server
+    admin.initializeApp();
+}else{ //Cloud run credentials as default on prod
+    const serviceAccount = require('../'+env.parsed.gcloud_credentials);
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
+}
   
 const db = admin.firestore();
 
