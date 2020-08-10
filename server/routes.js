@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var {getProjectData, getDocumentsByCode} = require('./utils')
+const path = require('path');
 
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
@@ -29,14 +30,16 @@ router.get('/api/register/:kitId([A-Z0-9]{7,7})', async (req, res, next) => {
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify({ project: `${JSON.stringify(doc.data())}` }));    
         })
-        
     }catch(err){
         //Log error here
         //parse error to send to front
         next(err)
     }
-        
-    
+});
+
+// Handles any requests that don't match the ones above, let react router take over
+router.get('*', (req,res) =>{
+    res.sendFile('index.html', {root: path.join(__dirname, '../build/')});
 });
 
 
