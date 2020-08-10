@@ -17,6 +17,11 @@ RUN npm install --only=production
 COPY . ./
 
 # Run the web service on container startup.
-# CMD ["npm", "run", "build"]
-CMD [ "npm", "run", "prod"]
-# CMD [ "npm", "run", "dev"]
+ENV NODE_ENV=production
+
+# Execute upon build
+RUN npm run build
+
+# Execute upon startup
+# CMD [ "npm", "run", "prod"]
+CMD ["npm", "run", "server"]
