@@ -1,12 +1,13 @@
 # CATCH QR
 
 ## Deployment Steps 
-1.  `docker build . -t <TAG_NAME>`
-2.  `docker push gcr.io/<PROJ_NAME>/<TAG_NAME>`
-3.  `gcloud builds submit . --tag --no-cache gcr.io/<PROJ_NAME>/<TAG_NAME>` 
+1.  `docker build . -t <IMAGE_NAME>`
+2.  `docker tag <IMAGE_NAME> gcr.io/<PROJ_NAME>/<TAG_NAME>>`
+3.  `docker push gcr.io/<PROJ_NAME>/<TAG_NAME>`
+4.  `gcloud run deploy <IMAGE_NAME> --platform managed --image gcr.io/<PROJ_NAME>/<TAG_NAME>` 
 
 ## Local Testing
-Ensure the application works locally before deploying via `PORT=3080 && docker run -p 9090:${PORT} -e PORT=${PORT} gcr.io/<PROJ_NAME/<TAG_NAME>:latest`
+Ensure the application works locally before deploying via `PORT=8080 && docker run -p 9090:${PORT} -e PORT=${PORT} gcr.io/<PROJ_NAME/<TAG_NAME>:latest`
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

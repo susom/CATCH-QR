@@ -1,6 +1,6 @@
 import React from 'react'
-import Landing from './views/Landing'
-import Register from './views/Register'
+import Activate from './views/Activate'
+import Home from './views/Home'
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,12 +13,10 @@ function App() {
   return (
     <Router>
         <Switch>
-          {/* <Route path='/register/:kitId' render={(props)=><Register {...props} />}/> */}
-          <Route path='/register/:kitId' component={() => { 
-              window.location.href = 'https://google.com'; 
-              return null;
-          }}/>
-          <Route path='/' render={(props)=><Landing {...props}/> }/>
+          <Route path='/activate/:kitId' render={(props)=><Activate {...props} />}/>
+          {/* <Route path='/support' render={(props)=><Landing {...props}/> }/> */}
+          <Route path='/activate' render={(props)=><Activate {...props}/> }/>
+          <Route path='/' render={(props)=><Home {...props}/> }/>
         </Switch>
     </Router>
   );
