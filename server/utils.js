@@ -36,7 +36,16 @@ async function getProjectData(project){
     }
 }
 
+async function getProjectList(){
+    let doc = await db.collection('vera_projects').get()
+    if(doc.size > 1)
+        return doc
+    else
+        throw new Error(`No projects found in database`)
+}
+
 module.exports = {
     getDocumentsByCode,
-    getProjectData
+    getProjectData,
+    getProjectList
 };

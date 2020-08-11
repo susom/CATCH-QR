@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var {getProjectData, getDocumentsByCode} = require('./utils')
+var {getProjectData, getDocumentsByCode, getProjectList} = require('./utils')
 const path = require('path');
 
 //Middle ware that is specific to this router
@@ -10,9 +10,9 @@ router.use(function timeLog(req, res, next) {
 });
 
 // Get routes
-router.get('/api/register/:kitId([A-Z0-9]{7,7})', async (req, res, next) => {
-    const {kitId} = req.params
-    
+router.post('/api/activate', async (req, res, next) => {
+    const {kitId} = req.body
+
     try{
         if(!kitId)
             throw new Error('No kit ID passed')
@@ -25,14 +25,29 @@ router.get('/api/register/:kitId([A-Z0-9]{7,7})', async (req, res, next) => {
         
         const veraProj = await getProjectData(data.project);
         
-        //Send project payload to front
+        //Send project payload to front, will always be one element.
         veraProj.forEach(doc=>{
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify({ project: `${JSON.stringify(doc.data())}` }));    
         })
-    }catch(err){
+    } catch (err){
         //Log error here
-        //parse error to send to front
+        next(err)
+    }
+});
+
+router.get('/api/projects', async (req, res, next) => {
+    console.log('insdie')
+    try{
+        const list = await getProjectList();
+        let docs = []
+        list.forEach(doc=>docs.push(doc.data()))
+        
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({ projectList: `${JSON.stringify(docs)}` }));    
+
+    } catch (err){
+        //Log error here
         next(err)
     }
 });
