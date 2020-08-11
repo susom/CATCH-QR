@@ -12,6 +12,7 @@ import { Typography, Box, Snackbar, IconButton } from '@material-ui/core';
 import StyledButton from '../../components/StyledButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CloseIcon from '@material-ui/icons/Close';
+import queryString from 'query-string'
 
 const styles = makeStyles((theme) => ({
     root: {
@@ -31,52 +32,42 @@ class Activate extends React.Component{
     constructor(props){
         super(props);
         this.ref = React.createRef();
+        const params = queryString.parse(this.props.location.search)
+        const {c} = params
         
         this.state = {
+            kitId: c,
             error: '',
             loading: true,
         }
     }
     componentDidUpdate() {
         if(this.ref.current){
-            //Default first value to V, Focus on second element
             this.ref.current[0].value = 'V'
-            this.ref.current[1].focus()
         }
     }
+
     componentDidMount(){
-        const { match: { params } } = this.props;
-        
-        if(params.kitId) //navigated here with a code
-            this.onComplete(params.kitId)
-        else
+        if(this.state.kitId){ //navigated here with a code
+            this.onComplete()
+        } else {
             this.setState({loading:false})
+        }
     }
 
-
-    getCodeValue = () => {
+    // Strip code value from params or route 
+    getCodeFromRef = () => {
         if(this.ref.current)
             return (this.ref.current.map((arg)=>arg.value)).join('')
-        else
-            return this.props.match.params.kitId
-        
-    }
-
-    //Clear Field on button press
-    clear = () => {
-        this.ref.current.forEach((input,ind) => (
-            ind !== 0 ? input.value = '' : input.value = 'V'
-        ))
     }
 
     //Perform redirect here, replace url
     redirect = (payload) => {
-        // console.log(payload)
         const url = payload.redirect_url
-        let code = this.getCodeValue()
-        var res = url.replace("[kit_id]", code);
-        console.log('fetched url : ', url)
-        console.log('replaced url : ' , res)
+        var {kitId} = this.state
+        if(!kitId)
+            kitId = this.getCodeFromRef()
+        var res = url.replace("[kit_id]", kitId);
         if(res)
             window.location = res
         else
@@ -85,7 +76,7 @@ class Activate extends React.Component{
 
     //Skeleton error handling
     handleError = (err) => {
-        this.setState({error: `Unable to find code ${this.getCodeValue()}, please try again`, loading:false})
+        this.setState({error: `Kit ID ${this.state.kitId} is invalid or expired , please try again`, kitId:'', loading:false})
     }
 
     //Close popup error message
@@ -93,23 +84,28 @@ class Activate extends React.Component{
         this.setState({error:''})
     }
 
-    //On Activate method that verifies / sends GET
-    onComplete = (code) => {
-        const check = code ? code : this.getCodeValue() //code will only be set if triggered from onComplete in pin Component
+
+    onComplete = () => {
+        const check = this.state.kitId ? this.state.kitId : this.getCodeFromRef() //code will only be set if triggered from onComplete in pin Component
         if(this.validate(check)){
-        // if(true){
-            axios.get(`/api/register/${check}`)
-                .then(res=>{
-                    this.redirect(JSON.parse(res?.data?.project))
-                })
+            let data = {
+                'kitId': check
+            };
+    
+            axios.post(`/api/activate`, data)
+                .then(res=>this.redirect(JSON.parse(res?.data?.project)))
                 .catch(err=>this.handleError(err))
         } else {
-            this.setState({error:'QR Code does not follow the correct format, please try again', loading: false, })
+            this.setState({error:'Kit ID appears invalid, please double check and try again', kitId:'', loading: false, })
         }
+        
     }
 
     // Function that validates QR code before sending request to server
     validate = (code) => {
+        if(!code)
+            return false
+        
         var validChars  = "234689ACDEFHJKMNPRTVWXY";
         code            = code.toUpperCase().trim().split("").reverse(); //prep code for algo UPPERCASe, TRIM , REVERSE
         var verifyDigit = code.shift(); 
@@ -187,7 +183,9 @@ class Activate extends React.Component{
                             <Grid item className='qr-container-int' container direction='column' alignItems='center' justify='center' xs={10}>
                                 <Grid item >
                                     <Box textAlign='center'>
-                                        <h2 >Enter Code</h2>
+                                        <h2 >Enter your Kit ID</h2>
+                                        {/* Put popup here with hover. */}
+                                        {/* hyphen after first 3 */}
                                     </Box>
                                 </Grid>
                                 <Grid item >
@@ -195,7 +193,6 @@ class Activate extends React.Component{
                                         <PinField
                                             className={"field-a"}
                                             format={k => k.toUpperCase()}
-                                            autoFocus
                                             ref={this.ref}
                                             length={7}
                                         />
