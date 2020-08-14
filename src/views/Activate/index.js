@@ -1,12 +1,10 @@
 import React from 'react';
-
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import PinField from 'react-pin-field';
 import './Activate.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from "@material-ui/core/styles";
-
 import Header from '../../components/Header';
 import { Typography, Box, Snackbar, IconButton } from '@material-ui/core';
 import StyledButton from '../../components/StyledButton';
@@ -84,7 +82,7 @@ class Activate extends React.Component{
         this.setState({error:''})
     }
 
-
+    //Callback for activate button press
     onComplete = () => {
         const check = this.state.kitId ? this.state.kitId : this.getCodeFromRef() //code will only be set if triggered from onComplete in pin Component
         if(this.validate(check)){
@@ -135,6 +133,47 @@ class Activate extends React.Component{
         return checkDigit == verifyDigit;
     }
     
+    // Which validation function is this ? Andy provided
+    // validateCodeFormatMod = (code) => {
+    //     if(!code)
+    //         return false;
+    //     // Flip an array so key is value - assumes array is unique
+    //     function array_flip( trans ) {
+    //         var key, tmp_ar = {};
+    //         for ( key in trans ) {
+    //             if ( trans.hasOwnProperty( key ) ) {
+    //                 tmp_ar[trans[key]] = key;
+    //             }
+    //         }
+    //         return tmp_ar;
+    //     }
+    //     // Prepare Valid Chars
+    //     // validChars is a string such as "234689ACDEFHJKMNPRTVWXY"
+    //     var validChars = VCG.validChars.split("");
+    //     // Flip Chars
+    //     var validKeys = array_flip(validChars);
+    //     // Prepare Code
+    //     var arrChars = code.trim().split("");
+    //     // Remove checkDigit
+    //     var lastDigit = arrChars.pop();
+    //     // Calc CheckDigit using mod
+    //     var idxSum = 0;
+    //     for (i in arrChars) {
+    //         char = arrChars[i];
+    //         var k = parseInt(validKeys[char]);
+    //         if (isNaN(k)) {
+    //             console.log('invalid character in code: ' + char + ' -- ignoring it for checksum');
+    //         } else {
+    //             idxSum = idxSum + k;
+    //         }
+    //     }
+    //     var mod = idxSum % validChars.length;
+    //     // Convert mod index to actual character (e.g. 6 becomes A)
+    //     var checkDigit = validChars[mod];
+    //     return checkDigit == lastDigit;
+    // }
+
+
     //Loading screen placeholder
     renderSplash = () => {
         const {classes} = this.props;
@@ -157,7 +196,6 @@ class Activate extends React.Component{
                 </Grid>
                 
             </Grid>
-            
         )
     }
 
@@ -185,7 +223,6 @@ class Activate extends React.Component{
                                     <Box textAlign='center'>
                                         <h2 >Enter your Kit ID</h2>
                                         {/* Put popup here with hover. */}
-                                        {/* hyphen after first 3 */}
                                     </Box>
                                 </Grid>
                                 <Grid item >

@@ -15,7 +15,6 @@ function Header({history}){
     const open = Boolean(anchorEl);
     
     const handleMenu = (event) => {
-        console.log(event.currentTarget)
         setAnchorEl(event.currentTarget);
     };
 
