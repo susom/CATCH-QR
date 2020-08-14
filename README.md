@@ -2,6 +2,7 @@
 
 This project includes a simple 2 page react app & express server dockerized for deployment on Google Cloud Run.
 
+
 ## Deployment Steps 
 1.  `docker build . -t <IMAGE_NAME>`
 2.  `docker tag <IMAGE_NAME> gcr.io/<PROJ_NAME>/<TAG_NAME>>`
@@ -14,7 +15,26 @@ Ensure the application works locally before deploying via `PORT=8080 && docker r
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Python Script
+
+Bulk insert of data into firestore script is also provided in /scripts.
+
+To run, a .env file with the following information must be filled out and placed in the root directory in the following format: 
+
+```bash
+gcloud_credentials_prod=<NAME_OF_JSON_SERVICE_ACCOUNT>
+COLLECTION_NAME_KIT=<FIRESTORE_COLLECTION_NAME>
+CSV_FILE_NAME=<IMPORT_CSV>
+```
+For ease of use, create a virtualenv to run the python file
+1. `python3 -m venv <name>`
+2. `source <name>/bin/activate`
+3. `pip install -r requirements.txt`
+4. `python insert.py`
+
+Note: a service account json must be generated with adequate permissions before running
+
+## Npm Scripts
 
 In the project directory, you can run:
 
