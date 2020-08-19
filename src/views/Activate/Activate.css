@@ -13,10 +13,11 @@ code {
   margin: 64px 0;
 }
 
+
 .field-a {
   width: 75px;
   height: 75px;
-  font-size: 40px;
+  font-size: 2em;
   text-align: center;
   outline: none;
   border-radius: 5px;
@@ -24,6 +25,44 @@ code {
   transition-property: color, border, box-shadow, transform;
   transition-duration: 250ms;
 }
+
+@media only screen and (max-width: 800px) {
+  .field-a {
+    width:2.5em;
+    height:2.5em;
+    font-size: 1.25em;
+  }
+}
+
+
+@media only screen and (max-width: 600px) {
+  .field-a {
+    width:1.5em;
+    height:1.5em;
+    font-size: 1.25em;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .field-a {
+    /* width:20px;
+    
+    height:20px; */
+    width: 1.25em;
+    height: 1.25em;
+    font-size: 1.25em;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .field-a {
+    width: 1em;
+    height: 1em;
+    font-size: 1.25em;
+  }
+}
+
+
 .field-a:focus {
     outline: none;
     box-shadow: 0 0 7px rgba(blue, 0.5);
