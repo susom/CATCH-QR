@@ -24,9 +24,9 @@ class Home extends React.Component{
     }
 
     componentDidMount(){
-        axios.get(`/api/projects`)
-            .then(res=>this.setState({projectList: JSON.parse(res?.data?.projectList)}))
-            .catch(err=>console.log(err))
+        // axios.get(`/api/projects`)
+        //     .then(res=>this.setState({projectList: JSON.parse(res?.data?.projectList)}))
+        //     .catch(err=>console.log(err))
     }
 
     activate = () => {
@@ -88,12 +88,12 @@ class Home extends React.Component{
                         />
                     </Grid>
                 </Grid>
-                <Grid style={{marginTop:'200px'}} item xs={12}>
+                {/* <Grid style={{marginTop:'200px'}} item xs={12}>
                     <Grid container spacing={3} >
                         {cards.length > 0 ? cards : this.renderPlaceholderCard()}
                     </Grid>
                     
-                </Grid>
+                </Grid> */}
               
             </div>
 

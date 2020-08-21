@@ -4,9 +4,9 @@ import axios from 'axios';
 import PinField from 'react-pin-field';
 import './Activate.css';
 import { makeStyles } from '@material-ui/core/styles';
-import { withStyles, responsiveFontSizes } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Header from '../../components/Header';
-import { Typography, Box, Snackbar, IconButton } from '@material-ui/core';
+import { Typography, Box, Snackbar, IconButton, Button} from '@material-ui/core';
 import StyledButton from '../../components/StyledButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CloseIcon from '@material-ui/icons/Close';
@@ -36,6 +36,7 @@ class Activate extends React.Component{
         this.state = {
             kitId: c,
             loading: true,
+            activate : false,
             success:false,
             open: false
         }
@@ -44,7 +45,7 @@ class Activate extends React.Component{
 
     componentDidMount(){
         if(this.state.kitId){ //navigated here with a code
-            this.onComplete()
+            this.onActivate()
         } else {
             this.setState({loading:false})
         }
@@ -62,17 +63,44 @@ class Activate extends React.Component{
         this.setState({open:false})
     }
 
-    
     onComplete = () => {
         this.setState({
             open:true, 
+            successMessage:"Congratulations! Kit activation complete.", 
+            activate:false,
+            loading:false,
+            success: true
+        })
+    }
+
+    onActivate = () => {
+        this.setState({
+            open:true, 
             successMessage:'Success! Your kit has been activated.', 
-            success:true,
+            activate:true,
             loading:false
         })
     }
 
-
+    renderSnackBar = () => {
+        return (
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={this.state.open ? true : false}
+                autoHideDuration={2000}
+                onClose={this.handleClose}
+                message={this.state.successMessage}
+                action={
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+            />
+        )
+    }
     //Loading screen placeholder
     renderSplash = () => {
         const {classes} = this.props;
@@ -98,6 +126,29 @@ class Activate extends React.Component{
         )
     }
 
+    renderActivate = () => {
+        return (
+            <Grid style={{padding:'1em'}} container direction='column'>
+                <Grid item >
+                    <Typography variant='h5' style={{marginTop:'1em'}} >Success! Your kit has been activated.</Typography>
+                </Grid>
+                <Grid item style={{marginTop:'3em'}} >
+                    <Typography>Please continue at step 2 on the included instructions-for-use packet</Typography>
+                </Grid>
+                <Grid item style={{marginTop:'3em'}} >
+                    <Typography>When your kit is ready for pickup, click the kit complete button</Typography>
+                </Grid>
+                <Grid item style={{marginTop:'3em'}} >
+                    <StyledButton 
+                        text='Kit Complete'
+                        onClick={this.onComplete} 
+                        style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
+                    />
+                </Grid>
+            </Grid>
+        )
+    }
+
     renderSuccess = () => {
         return (
             <Grid container direction='column'>
@@ -105,9 +156,10 @@ class Activate extends React.Component{
                     <Typography variant='h4' style={{marginTop:'1em'}} >Congratulations!</Typography>
                 </Grid>
                 <Grid item style={{marginTop:'3em'}} >
-                    <Typography>Your kit has been activated. Please continue using 
-                        the provided paper instructions included in the test
-                        package starting at <strong>step 2</strong>.</Typography>
+                    <Typography>This testing workflow is complete.</Typography>
+                </Grid>
+                <Grid item style={{marginTop:'3em', marginBottom:'3em'}}>
+                    <Typography>Your kit will be retrieved from the location it was delivered.</Typography>
                 </Grid>
             </Grid>
         )
@@ -115,72 +167,86 @@ class Activate extends React.Component{
 
     render(){
         //VXCPTP9
-        return (
-            <div className = 'qr-root'>  
-                <Header {...this.props}/>
-                
-                { !this.state.loading ?
+        const {success} = this.state
+
+        if(success){
+            return (
+                <div className = 'qr-root'>
+                    <Header {...this.props}/>
                     <Grid
                         container
                         spacing={0}
                         alignItems="center"
                         justify="center"
-                    >
-                        
-                        <Grid className = 'vera-icon' container alignItems="center" justify='center'>
-                            <Grid item >
-                                
+                        >
+                            <Grid item className = 'qr-container' container direction='row' alignItems='center' justify='center' >
+                                <Grid item className='qr-container-int' container alignItems='center' justify='center' xs={10}>
+                                    <Grid item xs={12}>
+                                        <Box textAlign='center'>
+                                            {this.renderSuccess()}
+                                        </Box>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item className = 'qr-container' container direction='row' alignItems='center' justify='center'>
-                            <Grid item className='qr-container-int' container alignItems='center' justify='center' xs={10}>
-                                <Grid item xs={12}>
-                                    <Box textAlign='center'>
-                                    {this.state.success ? this.renderSuccess() : <h2 >Enter your Kit ID</h2>}
-                                        
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <div className="container-a">
-                                        {! this.state.success && 
-                                            <PinField
-                                                className={"field-a"}
-                                                format={k => k.toUpperCase()}
-                                                ref={this.ref}
-                                                length={7}
+                        {this.renderSnackBar()}
+                </div>
+            )
+        }else{
+            return (
+                <div className = 'qr-root'>  
+                    <Header {...this.props}/>
+                    
+                    { !this.state.loading ?
+                        <Grid
+                            container
+                            spacing={0}
+                            alignItems="center"
+                            justify="center"
+                        >
+                            <Grid item className = 'qr-container' container direction='row' alignItems='center' justify='center'>
+                                <Grid item className='qr-container-int' container alignItems='center' justify='center' xs={10}>
+                                    <Grid item xs={12}>
+                                        <Box textAlign='center'>
+                                            {this.state.activate ? this.renderActivate() : <h2 >Enter your Kit ID</h2>}
+                                        </Box>
+                                    </Grid>
+                                    {(! this.state.activate && ! this.state.success) && 
+                                        <>
+                                            <Grid item xs={12}>
+                                                <div className="container-a">
+                                                    <PinField
+                                                        className={"field-a"}
+                                                        format={k => k.toUpperCase()}
+                                                        ref={this.ref}
+                                                        length={7}
+                                                    />
+                                                </div>
+                                            </Grid>
+                                            <StyledButton 
+                                                text='Activate'
+                                                onClick={this.onActivate} 
+                                                style={{
+                                                    borderRadius:50, 
+                                                    marginBottom:'10px', 
+                                                    color:'white', 
+                                                    width:'250px', 
+                                                    eight:'50px', 
+                                                    fontSize:'20px'
+                                                }} 
                                             />
-                                        }
-                                    </div>
+                                        </>
+                                    }
                                 </Grid>
-                                {!this.state.success &&
-                                    <StyledButton 
-                                        text='Activate' 
-                                        onClick={()=>this.onComplete()} 
-                                        style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
-                                    />
-                                }
                             </Grid>
                         </Grid>
-                    </Grid>
-                : this.renderSplash()
-                }
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={this.state.open ? true : false}
-                    autoHideDuration={6000}
-                    onClose={this.handleClose}
-                    message={this.state.successMessage}
-                    action={
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
+                    : this.renderSplash()
                     }
-                />
-            </div>
-        )
+                    {this.renderSnackBar()}
+                </div>
+            )
+        }
+        
     }
 }
 

@@ -28,7 +28,7 @@ function Header({history}){
                 <IconButton edge="start" onClick={homeRedirect}>
                     <VeraIcon />
                 </IconButton>
-                <div style={{marginLeft:'auto'}}>
+                {/* <div style={{marginLeft:'auto'}}>
                     <IconButton
                       onClick={handleMenu}
                     >
@@ -52,7 +52,7 @@ function Header({history}){
                         <MenuItem >Language 1</MenuItem>
                         <MenuItem >Language 2</MenuItem>
                     </Menu>
-                </div>
+                </div> */}
             </Toolbar>
         </AppBar>
 
