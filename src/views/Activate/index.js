@@ -1,15 +1,16 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
+// import axios from 'axios';
 import PinField from 'react-pin-field';
 import './Activate.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from "@material-ui/core/styles";
 import Header from '../../components/Header';
-import { Typography, Box, Snackbar, IconButton, Button} from '@material-ui/core';
+import { Typography, Box, Snackbar, IconButton, Chip} from '@material-ui/core';
 import StyledButton from '../../components/StyledButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CloseIcon from '@material-ui/icons/Close';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import queryString from 'query-string'
 
 const styles = makeStyles((theme) => ({
@@ -80,6 +81,10 @@ class Activate extends React.Component{
             activate:true,
             loading:false
         })
+    }
+
+    redirect = () => {
+        window.location.href = 'https://redcap.stanford.edu/surveys/?s=YALPAXADM7'
     }
 
     renderSnackBar = () => {
@@ -186,6 +191,13 @@ class Activate extends React.Component{
                                             {this.renderSuccess()}
                                         </Box>
                                     </Grid>
+                                    <Chip
+                                        style={{marginBottom:'1em'}}
+                                        label="REDCap Survey Link"
+                                        onClick={this.redirect}
+                                        color='secondary'
+                                        icon={<ExitToAppIcon/>}
+                                    />
                                 </Grid>
                             </Grid>
                         </Grid>
