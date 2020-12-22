@@ -3,10 +3,10 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
-// app.use(express.static(path.join(__dirname, "..", "build"))) commented out for redirecting only
+app.use(express.static(path.join(__dirname, "..", "build")))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(require('./routes')); commented out for redirect only
+app.use(require('./routes')); 
 
 app.get('/activate')
 app.use(function timeLog(req, res, next) {
