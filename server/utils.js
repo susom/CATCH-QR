@@ -13,7 +13,7 @@ if(process.env.NODE_ENV === 'production'){ //Dev server
 const db = admin.firestore();
 
 async function getDocumentsByCode(code){
-    let doc = await db.collection('vera_kits').where("kit_id", "==", code).get(); //get all documents
+    let doc = await db.collection('vera_kits_dev').where("kit_id", "==", code).get(); //get all documents
     switch(doc.size){
         case 0:
             throw new Error(`No document found with id ${code}`);

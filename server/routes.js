@@ -5,14 +5,19 @@ const path = require('path');
 
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
-  console.log('Time: ', Date.now());
-  next();
+    const {kitId} = req.body
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    if(kitId)
+        console.log(kitId, ' Queried by IP : ', ip, ' at time : ', Date.now());
+    
+    next();
 });
 
 // Get routes
 router.post('/api/activate', async (req, res, next) => {
     const {kitId} = req.body
-
+    
     try{
         if(!kitId)
             throw new Error('No kit ID passed')
@@ -54,6 +59,7 @@ router.get('/api/projects', async (req, res, next) => {
 
 // Handles any requests that don't match the ones above, let react router take over
 router.get('*', (req,res) =>{
+    console.log('inside catchall');
     res.sendFile('index.html', {root: path.join(__dirname, '../build/')});
 });
 
