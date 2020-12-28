@@ -59,7 +59,7 @@ class Activate extends React.Component{
 
     //Skeleton error handling
     handleError = (err) => {
-        this.setState({error: `Kit ID ${this.state.kitId} is invalid or expired , please try again`, kitId:'', loading:false})
+        this.setState({error: `Kit ID ${this.state.kitId} is invalid or expired , please contact support for your project`, kitId:'', loading:false})
     }
 
     //Close popup error message
@@ -79,7 +79,7 @@ class Activate extends React.Component{
                 .then(res=>this.redirect(JSON.parse(res?.data?.project)))
                 .catch(err=>this.handleError(err))
         } else {
-            this.setState({error:'Kit ID appears invalid, please double check and try again', kitId:'', loading: false, })
+            this.setState({error:`Kit ID appears invalid, please double check and try again. If you continue to have problems, please contact your study support team from your study's website.`, kitId:'', loading: false, })
         }
         
     }
@@ -222,46 +222,20 @@ class Activate extends React.Component{
                                 />
                             </Grid>
                         </Grid>
-                        
-                        
-
-                        
-                        {/* <Grid item container direction='row' alignItems='center' justify='center' xs={7}>
-                            <Grid item className='qr-container-int' container direction='column' alignItems='center' justify='center' xs={10}>
-                                <Grid item >
-                                    <Box className='qr-text' textAlign='center'>
-                                        <h2 >Enter your Kit ID</h2>
-                                    </Box>
-                                </Grid>
-                                <Grid item >
-                                    <div className="container-a">
-                                        <PinField
-                                            className={"field-a"}
-                                            format={k => k.toUpperCase()}
-                                            ref={this.ref}
-                                            length={7}
-                                        />
-                                    </div>
-                                </Grid>
-                                <StyledButton 
-                                    text='Activate' 
-                                    onClick={()=>this.onComplete()} 
-                                    style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
-                                />
-                            </Grid>
-                        </Grid> */}
                     </Grid>
                 : this.renderSplash()
                 }
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'left',
+                        horizontal: 'center',
                     }}
                     open={this.state.error ? true : false}
-                    autoHideDuration={6000}
+                    autoHideDuration={8000}
                     onClose={this.handleClose}
-                    message={this.state.error}
+                    message={
+                        this.state.error
+                    }
                     action={
                         <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
                             <CloseIcon fontSize="small" />
