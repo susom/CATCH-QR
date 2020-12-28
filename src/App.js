@@ -14,9 +14,8 @@ function App() {
     <Router>
         <Switch>
           <Route path='/activate/:kitId' render={(props)=><Activate {...props} />}/>
-          {/* <Route path='/support' render={(props)=><Landing {...props}/> }/> */}
           <Route path='/activate' render={(props)=><Activate {...props}/> }/>
-          <Route path='/' render={(props)=><Home {...props}/> }/>
+          <Route path='/' render={(props)=><Activate {...props}/> }/>
         </Switch>
     </Router>
   );

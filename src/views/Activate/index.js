@@ -3,8 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import PinField from 'react-pin-field';
 import './Activate.css';
-import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from "@material-ui/core/styles";
 import Header from '../../components/Header';
 import { Typography, Box, Snackbar, IconButton } from '@material-ui/core';
 import StyledButton from '../../components/StyledButton';
@@ -12,19 +10,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import queryString from 'query-string'
 
-const styles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      '& > * + *': {
-        marginLeft: theme.spacing(2),
-      },
-    },
-    MuiLinearProgress: {
-        colorPrimary: {
-            background: 'green !important'
-        },
-    }
-}));
 
 class Activate extends React.Component{
     constructor(props){
@@ -176,8 +161,6 @@ class Activate extends React.Component{
 
     //Loading screen placeholder
     renderSplash = () => {
-        const {classes} = this.props;
-        
         return (
             <Grid
                 container
@@ -188,7 +171,7 @@ class Activate extends React.Component{
             >
                 <Grid item xs={6} className='loading-container'>
                     <div >
-                        <LinearProgress className={classes.MuiLinearProgress}/>
+                        <LinearProgress/>
                         <Box textAlign='center'>
                             <Typography variant='h6'>Checking code & redirecting ...</Typography>
                         </Box>
@@ -211,18 +194,43 @@ class Activate extends React.Component{
                         spacing={0}
                         alignItems="center"
                         justify="center"
+                        
                     >
-                        <Grid className = 'vera-icon' container alignItems="center" justify='center'>
-                            <Grid item >
-                                
+                        <Grid className = 'qr-container' item xs={10}>
+                            <Grid item container justify='center' alignItems='center' >
+                                <Box className = 'qr-text' textAlign='center'>
+                                    <h3 >Enter your Kit ID</h3>
+                                </Box>
+                            </Grid>
+                            <Grid container justify='center' alignItems='center'>
+                                <Grid item>
+                                    <div className="container-a">
+                                        <PinField
+                                            className={"field-a"}
+                                            format={k => k.toUpperCase()}
+                                            ref={this.ref}
+                                            length={7}
+                                        />
+                                    </div>
+                                </Grid>
+                            </Grid>
+                            <Grid container item justify='center'>
+                                <StyledButton 
+                                    text='Activate' 
+                                    onClick={()=>this.onComplete()} 
+                                    style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
+                                />
                             </Grid>
                         </Grid>
-                        <Grid item className = 'qr-container' container direction='row' alignItems='center' justify='center' xs={7}>
+                        
+                        
+
+                        
+                        {/* <Grid item container direction='row' alignItems='center' justify='center' xs={7}>
                             <Grid item className='qr-container-int' container direction='column' alignItems='center' justify='center' xs={10}>
                                 <Grid item >
-                                    <Box textAlign='center'>
+                                    <Box className='qr-text' textAlign='center'>
                                         <h2 >Enter your Kit ID</h2>
-                                        {/* Put popup here with hover. */}
                                     </Box>
                                 </Grid>
                                 <Grid item >
@@ -241,7 +249,7 @@ class Activate extends React.Component{
                                     style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
                                 />
                             </Grid>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 : this.renderSplash()
                 }
@@ -265,4 +273,4 @@ class Activate extends React.Component{
     }
 }
 
-export default withStyles(styles)(Activate)
+export default Activate;
