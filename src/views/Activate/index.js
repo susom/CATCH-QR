@@ -3,6 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import PinField from 'react-pin-field';
 import './Activate.css';
+import BackIcon from  './activation_code_back.png';
+import FrontIcon from './activation_code_front.png';
 import Header from '../../components/Header';
 import { Typography, Box, Snackbar, IconButton } from '@material-ui/core';
 import StyledButton from '../../components/StyledButton';
@@ -189,40 +191,43 @@ class Activate extends React.Component{
                 <Header {...this.props}/>
                 
                 { !this.state.loading ?
-                    <Grid
-                        container
-                        spacing={0}
-                        alignItems="center"
-                        justify="center"
-                        
-                    >
-                        <Grid className = 'qr-container' item xs={10}>
-                            <Grid item container justify='center' alignItems='center' >
-                                <Box className = 'qr-text' textAlign='center'>
-                                    <h3 >Enter your Kit ID</h3>
-                                </Box>
-                            </Grid>
-                            <Grid container justify='center' alignItems='center'>
-                                <Grid item>
-                                    <div className="container-a">
-                                        <PinField
-                                            className={"field-a"}
-                                            format={k => k.toUpperCase()}
-                                            ref={this.ref}
-                                            length={7}
-                                        />
-                                    </div>
+                    <>
+                        <Grid style={{"position":"relative", "top": "100px"}} container spacing={0} alignItems="center" justify="center">
+                            <Grid className = 'qr-container' item xs={10}>
+                                <Grid item container justify='center' alignItems='center' >
+                                    <Box className = 'qr-text' textAlign='center'>
+                                        <h3 >Enter your Kit ID</h3>
+                                    </Box>
+                                </Grid>
+                                <Grid container justify='center' alignItems='center'>
+                                    <Grid item>
+                                        <div className="container-a">
+                                            <PinField
+                                                className={"field-a"}
+                                                format={k => k.toUpperCase()}
+                                                ref={this.ref}
+                                                length={7}
+                                            />
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                                <Grid container item justify='center'>
+                                    <StyledButton 
+                                        text='Activate' 
+                                        onClick={()=>this.onComplete()} 
+                                        className="styledButton"
+                                        // style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
+                                    />
                                 </Grid>
                             </Grid>
-                            <Grid container item justify='center'>
-                                <StyledButton 
-                                    text='Activate' 
-                                    onClick={()=>this.onComplete()} 
-                                    style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
-                                />
+                        </Grid>
+                        <Grid className = 'qs-container' container spacing={0} alignItems='center' justify='center'>
+                            <Grid item container justify='center' xs={10}>
+                                <img className = 'activation' src ={FrontIcon}/>
+                                <img className = 'activation' src ={BackIcon}/>
                             </Grid>
                         </Grid>
-                    </Grid>
+                    </>
                 : this.renderSplash()
                 }
                 <Snackbar
