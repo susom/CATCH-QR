@@ -1,5 +1,7 @@
 .activation {
-  max-width: 300px;
+  max-width: 350px;
+  width:100%;
+  height: auto;
 }
 
 code {
@@ -80,7 +82,7 @@ html, body, #root, #root>div {
 
 .qs-container {
   position: relative;
-  top: 10vh;
+  top: 100px;
   margin-top: 50px;
 }
 
@@ -115,8 +117,18 @@ html, body, #root, #root>div {
 }
 
 @media only screen and (max-width: 750px){
+  .activation{
+    max-width: 300px;
+    width:100%;
+    height: auto;
+  }
+
   .field-a {
     font-size: 20px;
+    /* width: 20px;
+    height: 20px; */
+    width: 4.5vw;
+    height: 4.5vw;
   }
   
   .styledButton {
@@ -127,6 +139,10 @@ html, body, #root, #root>div {
   
   .qr-container {
     height: 420px;
+  }
+
+  .container-a {
+    grid-column-gap: 5px;
   }
 
   .qr-text h3 {

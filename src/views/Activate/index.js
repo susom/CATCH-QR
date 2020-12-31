@@ -26,11 +26,12 @@ class Activate extends React.Component{
             loading: true,
         }
     }
-    componentDidUpdate() {
-        if(this.ref.current){
-            this.ref.current[0].value = 'V'
-        }
-    }
+    
+    // componentDidUpdate() {
+    //     if(this.ref.current){
+    //         this.ref.current[0].value = 'V'
+    //     }
+    // }
 
     componentDidMount(){
         if(this.state.kitId){ //navigated here with a code
@@ -61,6 +62,7 @@ class Activate extends React.Component{
 
     //Skeleton error handling
     handleError = (err) => {
+        console.log(err)
         this.setState({error: `Kit ID ${this.state.kitId} is invalid or expired , please contact support for your project`, kitId:'', loading:false})
     }
 
@@ -78,7 +80,7 @@ class Activate extends React.Component{
             };
     
             axios.post(`/api/activate`, data)
-                .then(res=>this.redirect(JSON.parse(res?.data?.project)))
+                .then(res=>this.redirect(res?.data?.project))
                 .catch(err=>this.handleError(err))
         } else {
             this.setState({error:`Kit ID appears invalid, please double check and try again. If you continue to have problems, please contact your study support team from your study's website.`, kitId:'', loading: false, })
@@ -221,11 +223,14 @@ class Activate extends React.Component{
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid className = 'qs-container' container spacing={0} alignItems='center' justify='center'>
-                            <Grid item container justify='center' xs={10}>
-                                <img className = 'activation' src ={FrontIcon}/>
+                        <Grid className = 'qs-container' container wrap='wrap' alignItems='center' justify='center'>
+                            <Grid container alignContent='center' alignItems='center' justify='center' item xs>
                                 <img className = 'activation' src ={BackIcon}/>
+                                <img className = 'activation' src ={FrontIcon}/>
                             </Grid>
+                            {/* <Grid item xs>
+                                
+                            </Grid> */}
                         </Grid>
                     </>
                 : this.renderSplash()
