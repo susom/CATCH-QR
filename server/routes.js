@@ -1,35 +1,33 @@
 var express = require('express');
 var router = express.Router();
-var {getProjectData, getDocumentsByCode, getProjectList} = require('./utils')
+// var {getProjectData, getDocumentsByCode, getProjectList} = require('./utils')
+const {Service} = require('./service');
 const path = require('path');
 
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
-  console.log('Time: ', Date.now());
-  next();
+    const {kitId} = req.body
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    if(kitId)
+        console.log(kitId, ' Queried by IP : ', ip, ' at time : ', Date.now());
+    
+    next();
 });
 
-// Get routes
 router.post('/api/activate', async (req, res, next) => {
     const {kitId} = req.body
-
+    const dbService = new Service();
     try{
         if(!kitId)
             throw new Error('No kit ID passed')
 
-        //Query doc by QR id
-        const docs = await getDocumentsByCode(kitId);
-        let data;
+        const doc = await dbService.querySingleDoc('vera_kits', 'kit_id', kitId);
+        const veraProj = await dbService.querySingleDoc('vera_projects', 'name', doc.project);
 
-        docs.forEach(doc=> data = doc.data());
-        
-        const veraProj = await getProjectData(data.project);
-        
-        //Send project payload to front, will always be one element.
-        veraProj.forEach(doc=>{
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({ project: `${JSON.stringify(doc.data())}` }));    
-        })
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify({ project: veraProj}));    
+
     } catch (err){
         //Log error here
         next(err)
@@ -37,7 +35,6 @@ router.post('/api/activate', async (req, res, next) => {
 });
 
 router.get('/api/projects', async (req, res, next) => {
-    console.log('insdie')
     try{
         const list = await getProjectList();
         let docs = []

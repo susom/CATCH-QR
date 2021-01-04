@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import PinField from 'react-pin-field';
 import './Activate.css';
-import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from "@material-ui/core/styles";
+import BackIcon from  './activation_code_back.png';
+import FrontIcon from './activation_code_front.png';
 import Header from '../../components/Header';
 import { Typography, Box, Snackbar, IconButton } from '@material-ui/core';
 import StyledButton from '../../components/StyledButton';
@@ -12,19 +12,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import queryString from 'query-string'
 
-const styles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      '& > * + *': {
-        marginLeft: theme.spacing(2),
-      },
-    },
-    MuiLinearProgress: {
-        colorPrimary: {
-            background: 'green !important'
-        },
-    }
-}));
 
 class Activate extends React.Component{
     constructor(props){
@@ -39,11 +26,12 @@ class Activate extends React.Component{
             loading: true,
         }
     }
-    componentDidUpdate() {
-        if(this.ref.current){
-            this.ref.current[0].value = 'V'
-        }
-    }
+    
+    // componentDidUpdate() {
+    //     if(this.ref.current){
+    //         this.ref.current[0].value = 'V'
+    //     }
+    // }
 
     componentDidMount(){
         if(this.state.kitId){ //navigated here with a code
@@ -74,7 +62,8 @@ class Activate extends React.Component{
 
     //Skeleton error handling
     handleError = (err) => {
-        this.setState({error: `Kit ID ${this.state.kitId} is invalid or expired , please try again`, kitId:'', loading:false})
+        console.log(err)
+        this.setState({error: `Kit ID ${this.state.kitId} is invalid or expired , please contact support for your project`, kitId:'', loading:false})
     }
 
     //Close popup error message
@@ -91,10 +80,10 @@ class Activate extends React.Component{
             };
     
             axios.post(`/api/activate`, data)
-                .then(res=>this.redirect(JSON.parse(res?.data?.project)))
+                .then(res=>this.redirect(res?.data?.project))
                 .catch(err=>this.handleError(err))
         } else {
-            this.setState({error:'Kit ID appears invalid, please double check and try again', kitId:'', loading: false, })
+            this.setState({error:`Kit ID appears invalid, please double check and try again. If you continue to have problems, please contact your study support team from your study's website.`, kitId:'', loading: false, })
         }
         
     }
@@ -176,8 +165,6 @@ class Activate extends React.Component{
 
     //Loading screen placeholder
     renderSplash = () => {
-        const {classes} = this.props;
-        
         return (
             <Grid
                 container
@@ -188,7 +175,7 @@ class Activate extends React.Component{
             >
                 <Grid item xs={6} className='loading-container'>
                     <div >
-                        <LinearProgress className={classes.MuiLinearProgress}/>
+                        <LinearProgress/>
                         <Box textAlign='center'>
                             <Typography variant='h6'>Checking code & redirecting ...</Typography>
                         </Box>
@@ -206,54 +193,59 @@ class Activate extends React.Component{
                 <Header {...this.props}/>
                 
                 { !this.state.loading ?
-                    <Grid
-                        container
-                        spacing={0}
-                        alignItems="center"
-                        justify="center"
-                    >
-                        <Grid className = 'vera-icon' container alignItems="center" justify='center'>
-                            <Grid item >
-                                
-                            </Grid>
-                        </Grid>
-                        <Grid item className = 'qr-container' container direction='row' alignItems='center' justify='center' xs={7}>
-                            <Grid item className='qr-container-int' container direction='column' alignItems='center' justify='center' xs={10}>
-                                <Grid item >
-                                    <Box textAlign='center'>
-                                        <h2 >Enter your Kit ID</h2>
-                                        {/* Put popup here with hover. */}
+                    <>
+                        <Grid style={{"position":"relative", "top": "100px"}} container spacing={0} alignItems="center" justify="center">
+                            <Grid className = 'qr-container' item xs={10}>
+                                <Grid item container justify='center' alignItems='center' >
+                                    <Box className = 'qr-text' textAlign='center'>
+                                        <h3 >Enter your Kit ID</h3>
                                     </Box>
                                 </Grid>
-                                <Grid item >
-                                    <div className="container-a">
-                                        <PinField
-                                            className={"field-a"}
-                                            format={k => k.toUpperCase()}
-                                            ref={this.ref}
-                                            length={7}
-                                        />
-                                    </div>
+                                <Grid container justify='center' alignItems='center'>
+                                    <Grid item>
+                                        <div className="container-a">
+                                            <PinField
+                                                className={"field-a"}
+                                                format={k => k.toUpperCase()}
+                                                ref={this.ref}
+                                                length={7}
+                                            />
+                                        </div>
+                                    </Grid>
                                 </Grid>
-                                <StyledButton 
-                                    text='Activate' 
-                                    onClick={()=>this.onComplete()} 
-                                    style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
-                                />
+                                <Grid container item justify='center'>
+                                    <StyledButton 
+                                        text='Activate' 
+                                        onClick={()=>this.onComplete()} 
+                                        className="styledButton"
+                                        // style={{borderRadius:50, marginBottom:'10px', color:'white', width:'250px', height:'50px', fontSize:'20px'}} 
+                                    />
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
+                        <Grid className = 'qs-container' container wrap='wrap' alignItems='center' justify='center'>
+                            <Grid container alignContent='center' alignItems='center' justify='center' item xs>
+                                <img className = 'activation' src ={BackIcon}/>
+                                <img className = 'activation' src ={FrontIcon}/>
+                            </Grid>
+                            {/* <Grid item xs>
+                                
+                            </Grid> */}
+                        </Grid>
+                    </>
                 : this.renderSplash()
                 }
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'left',
+                        horizontal: 'center',
                     }}
                     open={this.state.error ? true : false}
-                    autoHideDuration={6000}
+                    autoHideDuration={8000}
                     onClose={this.handleClose}
-                    message={this.state.error}
+                    message={
+                        this.state.error
+                    }
                     action={
                         <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
                             <CloseIcon fontSize="small" />
@@ -265,4 +257,4 @@ class Activate extends React.Component{
     }
 }
 
-export default withStyles(styles)(Activate)
+export default Activate;

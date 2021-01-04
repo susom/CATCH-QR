@@ -2,10 +2,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button'
 import {ArrowForward} from '@material-ui/icons';
 
-function StyledButton({text, onClick, style}){
+function StyledButton({text, onClick, className}){
     return (
         <Button
-            style={style}
+            className={className}
             onClick = {onClick} 
             variant='contained' 
             color='primary'
