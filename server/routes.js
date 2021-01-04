@@ -22,7 +22,7 @@ router.post('/api/activate', async (req, res, next) => {
         if(!kitId)
             throw new Error('No kit ID passed')
 
-        const doc = await dbService.querySingleDoc('vera_kits_dev', 'kit_id', kitId);
+        const doc = await dbService.querySingleDoc('vera_kits', 'kit_id', kitId);
         const veraProj = await dbService.querySingleDoc('vera_projects', 'name', doc.project);
 
         res.setHeader('Content-Type', 'application/json');
@@ -35,7 +35,6 @@ router.post('/api/activate', async (req, res, next) => {
 });
 
 router.get('/api/projects', async (req, res, next) => {
-    console.log('insdie')
     try{
         const list = await getProjectList();
         let docs = []
@@ -52,7 +51,6 @@ router.get('/api/projects', async (req, res, next) => {
 
 // Handles any requests that don't match the ones above, let react router take over
 router.get('*', (req,res) =>{
-    console.log('inside catchall');
     res.sendFile('index.html', {root: path.join(__dirname, '../build/')});
 });
 
