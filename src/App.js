@@ -13,9 +13,14 @@ function App() {
   return (
     <Router>
         <Switch>
-          <Route path='/activate/:kitId' render={(props)=><Activate {...props} />}/>
-          <Route path='/activate' render={(props)=><Activate {...props}/> }/>
-          <Route path='/' render={(props)=><Activate {...props}/> }/>
+          {/* <Route path='/redirect' component={() => {
+            window.location.href = 'https://google.com';
+            return null;
+            }}
+          /> */}
+          {/* <Route path='/activate/:kitId' render={(props)=><Activate {...props} />}/>
+          <Route path='/activate' render={(props)=><Activate {...props}/> }/> */}
+          <Route path='/' render={(props)=><Home {...props}/> }/>
         </Switch>
     </Router>
   );

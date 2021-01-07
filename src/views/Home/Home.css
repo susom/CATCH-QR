@@ -1,3 +1,77 @@
 body {
     background-color: #fffdf6!important;
 }
+
+.item {
+    display: flex;
+    height: 250px;
+    border-radius: 30px !important;
+    box-shadow:
+  0 2.8px 45.3px rgba(0, 0, 0, 0.02),
+  0 6.7px 51.7px rgba(0, 0, 0, 0.028),
+  0 12.5px 53.1px rgba(0, 0, 0, 0.035),
+  0 22.3px 53.4px rgba(0, 0, 0, 0.042),
+  0 41.8px 56.2px rgba(0, 0, 0, 0.05),
+  0 100px 77px rgba(0, 0, 0, 0.07)!important;
+    overflow: visible !important;
+}
+
+.Chan_Zuckerberg-logo {
+    background-color: black !important;
+    top:20px;
+    width: 400px;
+    border-radius: 30px !important;
+    position: relative;
+    left: -50px;
+    height: 140px;
+    padding: 25px;
+}
+
+.Chan_Zuckerberg-button {
+    color:white !important;
+    background-color: black !important;
+}
+
+.Catch-logo {
+    background-color: rgb(129,21,21) !important;
+    /* width: 85%; */
+    width: 400px;
+    border-radius: 30px !important;
+    position: relative;
+    left: -50px;
+    height: 140px;
+    top:20px;
+    padding: 25px;
+}
+
+.Catch-button {
+    color:white !important;
+
+    background-color: rgb(129,21,21) !important;
+}
+
+@media only screen and (max-width: 851px){
+    .Catch-logo {
+        border-radius: 30px !important;
+        position: relative;
+        top:10px;
+        padding: 25px;
+        left: 0px;
+        width: 130px;
+        height: auto;
+    }
+    .Chan_Zuckerberg-logo {
+        border-radius: 30px !important;
+        position: relative;
+        top:10px;
+        padding: 25px;
+        left: 0px;
+        width: 130px;
+        height: auto;
+    } 
+    .item {
+        display: block;
+        height: 170px;
+    }
+    
+}

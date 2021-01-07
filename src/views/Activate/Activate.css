@@ -134,6 +134,7 @@ html, body, #root, #root>div {
   .styledButton {
     width: 160px;
     height: 40px;
+    color: red;
     font-size: 15px !important;
   }
   

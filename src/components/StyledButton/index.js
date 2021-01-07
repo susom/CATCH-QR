@@ -5,10 +5,11 @@ import {ArrowForward} from '@material-ui/icons';
 function StyledButton({text, onClick, className}){
     return (
         <Button
+            // style={{backgroundColor: 'red'}}
             className={className}
             onClick = {onClick} 
             variant='contained' 
-            color='primary'
+            // color='primary'
             endIcon={<ArrowForward/>}
             size='large'
         >
