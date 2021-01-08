@@ -1,17 +1,15 @@
 import React from 'react';
-import {Help} from '@material-ui/icons'
 import StyledButton from '../../components/StyledButton'
 import Grid from '@material-ui/core/Grid'
 import {
-    Card, CardHeader, CardContent, CardActions, CardMedia,
-    Typography, IconButton
+    Card, CardContent, CardActions, CardMedia,
+    Typography
 } from '@material-ui/core';
 import queryString from 'query-string'
-// import axios from 'axios';
 import Header from '../../components/Header'
 import './Home.css';
 import Chan_Zucker_logo from './biohub_logo.png';
-import Catch_Study_logo from './catch-white.svg';
+import Catch_Study_logo from './Group.svg';
 
 class Home extends React.Component{
     constructor(props){
@@ -30,12 +28,14 @@ class Home extends React.Component{
         const params = queryString.parse(this.props.location.search)
         const {c: activationCode} = params
         let string;
+        let base = activationCode ? `?c=${activationCode}` : '';
+        
         switch (item) {
             case 'Chan_Zuckerberg':
-                string = `https://vera.stanford.edu/czbiohub/testing/kit/register?c=${activationCode}`;
+                string = `https://vera.stanford.edu/czbiohub/testing/kit/register${base}`;
                 break;
             case 'Catch':
-                string = `https://catchstudy.stanford.edu/activate?c=${activationCode}`;
+                string = `https://catchstudy.stanford.edu/activate${base}`;
                 break;                                
             default:
                 return;
@@ -46,9 +46,9 @@ class Home extends React.Component{
     renderLogo = (item) => {
         switch (item) {
             case 'Chan_Zuckerberg':
-                return <img className='Chan_Zuckerberg-logo' src={Chan_Zucker_logo} />
+                return <img alt='chan-logo' className='Chan_Zuckerberg-logo' src={Chan_Zucker_logo} />
             case 'Catch':
-                return <img className='Catch-logo' src={Catch_Study_logo} />
+                return <img alt='catch-logo' className='Catch-logo' src={Catch_Study_logo} />
             default:
                 break;
         }
@@ -134,7 +134,7 @@ class Home extends React.Component{
                     <Grid item xs={12}>
                     </Grid>
                 </Grid>
-                <Grid container style={{marginTop:'200px'}} >
+                <Grid container style={{marginTop:'100px'}} >
                     <Grid container  justify='center' alignItems='center' spacing={4} >
                         {cards}
                     </Grid>

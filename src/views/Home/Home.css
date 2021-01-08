@@ -52,21 +52,21 @@ body {
 
 @media only screen and (max-width: 851px){
     .Catch-logo {
-        border-radius: 30px !important;
+        /* border-radius: 30px !important; */
         position: relative;
         top:10px;
         padding: 25px;
         left: 0px;
-        width: 130px;
+        width: 180px;
         height: auto;
     }
     .Chan_Zuckerberg-logo {
-        border-radius: 30px !important;
+        /* border-radius: 30px !important; */
         position: relative;
         top:10px;
         padding: 25px;
         left: 0px;
-        width: 130px;
+        width: 150px;
         height: auto;
     } 
     .item {
