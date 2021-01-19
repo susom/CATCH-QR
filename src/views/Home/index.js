@@ -3,12 +3,12 @@ import StyledButton from '../../components/StyledButton'
 import Grid from '@material-ui/core/Grid'
 import {
     Card, CardContent, CardActions, CardMedia,
-    Typography
+    Typography, ListItem, List, ListItemText, Link
 } from '@material-ui/core';
 import queryString from 'query-string'
 import Header from '../../components/Header'
 import './Home.css';
-import Chan_Zucker_logo from './biohub_logo.png';
+import Chan_Zucker_logo from './biohub_middle.png';
 import Catch_Study_logo from './Group.svg';
 
 class Home extends React.Component{
@@ -64,14 +64,17 @@ class Home extends React.Component{
                         />
                         <CardContent>
                             <div style={{flexDirection: 'column'}}>
-                                <Typography className = 'description' variant="body2" color="textSecondary" component="p">
-                                    {
-                                        item === 'Chan_Zuckerberg' ? 'The Chan Zuckerberg Biohub was created to support that vision — by understanding the fundamental mechanisms underlying disease and developing new technologies to lead to actionable diagnostics and effective therapies.' 
-                                        : 
-                                        'Stanford Medicine’s CATCH (Community Alliance to Test Coronavirus at Home) Study aims to track the spread of COVID-19 in the San Francisco Bay Area.'
-                                    }
+                                { item === 'Chan_Zuckerberg' ? 
+                                    <Typography className='description' variant='body2' color='textSecondary'>
+                                        The Chan Zuckerberg Biohub is a nonprofit research center that brings together physicians, scientists, and engineers from Stanford University, UC San Francisco, UC Berkeley. The CZ Biohub seeks to understand the fundamental mechanisms underlying disease and to develop new technologies that will lead to actionable diagnostics and effective therapies. To learn more, visit {" "}
+                                        <Link href='http://czbiohub.org/'>CZBiohub.org</Link>
+                                    </Typography>
+                                    :
+                                    <Typography className='description' variant='body2' color='textSecondary'>
+                                        Stanford Medicine’s CATCH (Community Alliance to Test Coronavirus at Home) Study aims to track the spread of COVID-19 in the San Francisco Bay Area.
+                                    </Typography>
+                                }
                                 
-                                </Typography>
                                 <div style={{flexDirection:'column'}}>
                                     <br></br>
                                     <CardActions disableSpacing>
@@ -86,12 +89,6 @@ class Home extends React.Component{
                                 </div>        
                             </div>
                         </CardContent>
-                        
-                        {/* <CardActions disableSpacing>
-                            <IconButton href={'http://www.google.com'} aria-label="Help">
-                                <Help />
-                            </IconButton>
-                        </CardActions> */}
                     </Card>
                 </Grid>
             )
@@ -101,7 +98,7 @@ class Home extends React.Component{
     renderMobileCards = () => {
         return (
             this.state.projectList.map(item=>
-                <Grid key={item} item xs={10} >
+                <Grid key={item} item xs={9} >
                     <Card className='item'>
                         <div style={{display:'flex', justifyContent:'center'}}>
                             <CardMedia
@@ -125,16 +122,28 @@ class Home extends React.Component{
     }
 
     render(){
-        const cards = this.state.viewWidth >= 850 ? this.renderDestktopCards() : this.renderMobileCards();
+        const cards = this.state.viewWidth >= 950 ? this.renderDestktopCards() : this.renderMobileCards();
 
         return (
             <div>
                 <Header {...this.props}/>
                 <Grid justify='center' direction='column' alignItems='center' container>
-                    <Grid item xs={12}>
+                    <Grid item xs={10} style={{marginTop:'50px'}}>
+                        <Card className='item instructions'>
+                            <List>
+                                <ListItem>
+                                    <ListItemText>To activate your home test kit, please select the program you are participating in and used to request a kit.</ListItemText>
+                                </ListItem>
+                            </List>
+                        </Card>
                     </Grid>
+                    {/* 
+                        (1) Header: Could we add in some header with brief instructions?  “To activate your home test kit, please select the program you are participating in and used to request a kit.”
+                        (2) CZ Biohub description: “For CZ Biohub employees”
+ 
+                    */}
                 </Grid>
-                <Grid container style={{marginTop:'100px'}} >
+                <Grid container style={{marginTop:'50px'}} >
                     <Grid container  justify='center' alignItems='center' spacing={4} >
                         {cards}
                     </Grid>

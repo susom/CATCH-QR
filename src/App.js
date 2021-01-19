@@ -1,5 +1,5 @@
 import React from 'react'
-// import Activate from './views/Activate'
+import Activate from './views/Activate'
 import Home from './views/Home'
 import {
   BrowserRouter as Router,

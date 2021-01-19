@@ -16,8 +16,12 @@ body {
     overflow: visible !important;
 }
 
+.item, .instructions {
+    height : auto;
+}
+
 .Chan_Zuckerberg-logo {
-    background-color: black !important;
+    background-color: rgba(110,114,119, 0.92) !important;
     top:20px;
     width: 400px;
     border-radius: 30px !important;
@@ -29,7 +33,7 @@ body {
 
 .Chan_Zuckerberg-button {
     color:white !important;
-    background-color: black !important;
+    background-color: rgba(110,114,119, 0.92) !important;
 }
 
 .Catch-logo {
@@ -50,7 +54,7 @@ body {
     background-color: rgb(129,21,21) !important;
 }
 
-@media only screen and (max-width: 851px){
+@media only screen and (max-width: 951px){
     .Catch-logo {
         /* border-radius: 30px !important; */
         position: relative;
@@ -64,7 +68,7 @@ body {
         /* border-radius: 30px !important; */
         position: relative;
         top:10px;
-        padding: 25px;
+        padding: 15px;
         left: 0px;
         width: 150px;
         height: auto;
@@ -73,5 +77,7 @@ body {
         display: block;
         height: 170px;
     }
-    
+    .item, .instructions {
+        height : auto;
+    }
 }
